@@ -1,5 +1,5 @@
 const loader = new Loader({
-  apiKey: "AIzaSyB_d0SXp7nqxpM8t8qRGPyUibsNnzMjVcM",
+  apiKey: "DEINAPIKEY",
   version: "weekly",
   ...additionalOptions,
 });
