@@ -24,7 +24,6 @@
     <h1>Restaurant Guide Finder</h1>
   </div>
 
-
   <!-- Buttons + Datum/Uhrzeit -->
   <div class="container d-flex justify-content-between align-items-center my-2 flex-wrap">
     <div class="d-flex gap-2">
@@ -62,20 +61,6 @@
     </div>
   </div>
 
-<!-- Maps -->
-<div>
-  <div id="map" style="height: 400px; width: 100%;"></div>
-  <script>
-    function initMap() {
-      const map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 52.5200, lng: 13.4050 }, // Berlin
-        zoom: 10,
-      });
-    }
-    </script>
-    </div><script async
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_d0SXp7nqxpM8t8qRGPyUibsNnzMjVcM&loading=async&callback=initMap">
-    </script>
   <!-- Restaurantliste (React root) -->
   <div class="container" id="root"></div>
 
@@ -86,36 +71,36 @@
 
   <!-- React Code -->
   <script type="text/babel">
-    // const restaurants = [
-    //   {
-    //     id: 1,
-    //     name: "La Trattoria",
-    //     kontakt: "Maxstraße 1, 80333 München",
-    //     bewertung: "4.5 Sterne",
-    //     location: "Maxstraße 1, München"
-    //   },
-    //   {
-    //     id: 2,
-    //     name: "Sushi Zen",
-    //     kontakt: "Hiroshimaplatz 5, 70173 Stuttgart",
-    //     bewertung: "4.0 Sterne",
-    //     location: "Hiroshimaplatz 5, Stuttgart"
-    //   },
-    //   {
-    //     id: 3,
-    //     name: "Curry House",
-    //     kontakt: "Berliner Straße 10, 10115 Berlin",
-    //     bewertung: "3.2 Sterne",
-    //     location: "Berliner Straße 10, Berlin"
-    //   },
-    //   {
-    //     id: 4,
-    //     name: "Tacos Locos",
-    //     kontakt: "Friedrichstraße 20, 10117 Berlin",
-    //     bewertung: "2.5 Sterne",
-    //     location: "Friedrichstraße 20, Berlin"
-    //   }
-    // ];
+    const restaurants = [
+      {
+        id: 1,
+        name: "La Trattoria",
+        kontakt: "Maxstraße 1, 80333 München",
+        bewertung: "4.5 Sterne",
+        location: "Maxstraße 1, München"
+      },
+      {
+        id: 2,
+        name: "Sushi Zen",
+        kontakt: "Hiroshimaplatz 5, 70173 Stuttgart",
+        bewertung: "4.0 Sterne",
+        location: "Hiroshimaplatz 5, Stuttgart"
+      },
+      {
+        id: 3,
+        name: "Curry House",
+        kontakt: "Berliner Straße 10, 10115 Berlin",
+        bewertung: "3.2 Sterne",
+        location: "Berliner Straße 10, Berlin"
+      },
+      {
+        id: 4,
+        name: "Tacos Locos",
+        kontakt: "Friedrichstraße 20, 10117 Berlin",
+        bewertung: "2.5 Sterne",
+        location: "Friedrichstraße 20, Berlin"
+      }
+    ];
 
     function getSterneIcons(bewertung) {
       const zahl = parseFloat(bewertung.replace(",", "."));
