@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', init); // Restaurants (kann mit de
       infoWindow.open(map, marker);
     });
   });
-}
+
 
 // Funktion für mehr Infos (kann später erweitert werden)
 function zeigeRestaurantDetails(name, kontakt, bewertung) {

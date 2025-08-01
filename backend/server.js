@@ -8,6 +8,10 @@ const port = 5000;
 app.use(cors());
 app.use(express.json());
 
+require('dotenv').config();
+const apiKey = process.env.API_KEY;
+console.log(`API Key: ${apiKey}`);
+
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
