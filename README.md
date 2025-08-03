@@ -13,3 +13,4 @@ Step-by-Step:
     html grundgerüst bauen
     integrieren von google fonts, Bootstrap CSS, Google Maps Api
     anbinden der App.js
+6. 

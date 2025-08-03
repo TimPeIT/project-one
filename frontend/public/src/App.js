@@ -80,3 +80,6 @@ function zeigeUhr() {
 }
 
 zeigeUhr();
+
+
+// benötigen wir eigentlich nicht mehr 

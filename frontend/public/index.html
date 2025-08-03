@@ -24,7 +24,6 @@
     <h1>Restaurant Guide Finder</h1>
   </div>
 
-
   <!-- Buttons + Datum/Uhrzeit -->
   <div class="container d-flex justify-content-between align-items-center my-2 flex-wrap">
     <div class="d-flex gap-2">
@@ -33,49 +32,10 @@
     </div>
     <div id="date-time" class="text-end text-muted small"></div>
   </div>
-
-  <!-- Suchformular -->
-  <div class="container my-4">
-    <div class="card p-4 shadow">
-      <div class="row g-3">
-        <div class="col-md-4">
-          <input type="text" class="form-control" placeholder="Gericht oder Land suchen..." />
-        </div>
-        <div class="col-md-2">
-          <input type="text" class="form-control" placeholder="Postleitzahl" />
-        </div>
-        <div class="col-md-2">
-          <input type="number" class="form-control" placeholder="Radius (km)" />
-        </div>
-        <div class="col-md-2">
-          <select class="form-select">
-            <option disabled selected>Bewertung</option>
-            <option>5 Sterne</option>
-            <option>4+ Sterne</option>
-            <option>3+ Sterne</option>
-          </select>
-        </div>
-        <div class="col-md-2">
-          <button class="btn btn-primary w-100">Suchen</button>
-        </div>
-      </div>
-    </div>
+  <div>
+    <div id="map" style="height: 400px; width: 100%;"></div>
   </div>
 
-<!-- Maps -->
-<div>
-  <div id="map" style="height: 400px; width: 100%;"></div>
-  <script>
-    function initMap() {
-      const map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 52.5200, lng: 13.4050 }, // Berlin
-        zoom: 10,
-      });
-    }
-    </script>
-    </div><script async
-        src="https://maps.googleapis.com/maps/api/js?key=DEINAPIKEY&loading=async&callback=initMap">
-    </script>
   <!-- Restaurantliste (React root) -->
   <div class="container" id="root"></div>
 
@@ -86,36 +46,7 @@
 
   <!-- React Code -->
   <script type="text/babel">
-    // const restaurants = [
-    //   {
-    //     id: 1,
-    //     name: "La Trattoria",
-    //     kontakt: "Maxstraße 1, 80333 München",
-    //     bewertung: "4.5 Sterne",
-    //     location: "Maxstraße 1, München"
-    //   },
-    //   {
-    //     id: 2,
-    //     name: "Sushi Zen",
-    //     kontakt: "Hiroshimaplatz 5, 70173 Stuttgart",
-    //     bewertung: "4.0 Sterne",
-    //     location: "Hiroshimaplatz 5, Stuttgart"
-    //   },
-    //   {
-    //     id: 3,
-    //     name: "Curry House",
-    //     kontakt: "Berliner Straße 10, 10115 Berlin",
-    //     bewertung: "3.2 Sterne",
-    //     location: "Berliner Straße 10, Berlin"
-    //   },
-    //   {
-    //     id: 4,
-    //     name: "Tacos Locos",
-    //     kontakt: "Friedrichstraße 20, 10117 Berlin",
-    //     bewertung: "2.5 Sterne",
-    //     location: "Friedrichstraße 20, Berlin"
-    //   }
-    // ];
+
 
     function getSterneIcons(bewertung) {
       const zahl = parseFloat(bewertung.replace(",", "."));
@@ -135,6 +66,24 @@
 
     function RestaurantItem({ restaurant }) {
       const [showMap, setShowMap] = React.useState(false);
+      const mapRef = React.useRef(null);
+      const mapInstanceRef = React.useRef(null);
+
+      React.useEffect(() => {
+        if (showMap && mapRef.current && !mapInstanceRef.current) {
+          const { google } = window;
+          mapInstanceRef.current = new google.maps.Map(mapRef.current, {
+            center: { lat: restaurant.lat, lng: restaurant.lng },
+            zoom: 15,
+          });
+
+          new google.maps.Marker({
+            position: { lat: restaurant.lat, lng: restaurant.lng },
+            map: mapInstanceRef.current,
+            title: restaurant.name,
+          });
+        }
+      }, [showMap, restaurant.lat, restaurant.lng, restaurant.name]);
 
       return (
         <li className="list-group-item d-flex flex-column">
@@ -149,27 +98,98 @@
             </button>
           </div>
           {showMap && (
-            <div className="mini-map mt-3">
-              <p><strong>Standort:</strong> {restaurant.location}</p>
-              <p><strong>Bewertung:</strong> {restaurant.bewertung}</p>
+            <div className="mt-3">
+              <div ref={mapRef} style={{ height: "300px", width: "100%" }} className="border rounded">
+              </div>
             </div>
-          )}
-        </li>
+          )
+          }
+        </li >
       );
     }
 
-    function RestaurantList() {
-      return (
+// THEO TEST
+
+function RestaurantList() {
+  const [restaurants, setRestaurants] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+
+  const plzRef = React.useRef();
+  const queryRef = React.useRef();
+  const radiusRef = React.useRef();
+
+  const fetchRestaurants = async () => {
+    const city = plzRef.current?.value || "";
+    const cuisine = queryRef.current?.value || "";
+    const radius = radiusRef.current?.value || "";
+
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/places/search?city=${city}&cuisine=${cuisine}&radius=${radius}`
+      );
+      const data = await response.json();
+      setRestaurants(data);
+    } catch (err) {
+      console.error("Fehler beim Abrufen:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      {/* Suchformular */}
+      <div className="container my-4">
+        <div className="card p-4 shadow">
+          <div className="row g-3">
+            <div className="col-md-4">
+              <input ref={queryRef} type="text" className="form-control" placeholder="Gericht oder Land suchen..." />
+            </div>
+            <div className="col-md-2">
+              <input ref={plzRef} type="text" className="form-control" placeholder="Postleitzahl" />
+            </div>
+            <div className="col-md-2">
+              <input ref={radiusRef} type="number" className="form-control" placeholder="Radius (km)" />
+            </div>
+            <div className="col-md-2">
+              <select className="form-select">
+                <option disabled selected>Bewertung</option>
+                <option value="5">5 Sterne</option>
+                <option value="4">4 Sterne</option>
+                <option value="3">3 Sterne</option>
+                <option value="2">2 Sterne</option>
+                <option value="1">1 Stern</option>
+              </select>
+            </div>
+            <div className="col-md-2">
+              <button onClick={fetchRestaurants} className="btn btn-primary w-100">Suchen</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Ergebnisliste */}
+      <div className="container">
         <div className="card p-4 shadow">
           <h4 className="mb-3">Gefundene Restaurants</h4>
-          <ul className="list-group">
-            {restaurants.map(res => (
-              <RestaurantItem key={res.id} restaurant={res} />
-            ))}
-          </ul>
+          {loading ? (
+            <p>Lade Restaurants...</p>
+          ) : restaurants.length === 0 ? (
+            <p>Keine Restaurants gefunden.</p>
+          ) : (
+            <ul className="list-group">
+              {restaurants.map((res) => (
+                <RestaurantItem key={res.id} restaurant={res} />
+              ))}
+            </ul>
+          )}
         </div>
-      );
-    }
+      </div>
+    </>
+  );
+}
+
 
     ReactDOM.createRoot(document.getElementById("root")).render(<RestaurantList />);
 
@@ -181,8 +201,15 @@
       timeZone: "Europe/Berlin"
     });
     document.getElementById("date-time").textContent = formatter.format(now) + " (MEZ)";
+  
   </script>
-  <script src="App.js"></script>
+
+  <!-- Google Maps API -->
+   <script 
+   async
+   defer 
+   src="https://maps.googleapis.com/maps/api/js?key=DEINAPIKEY&loading=async&callback=initMap">
+    </script>
 </body>
 
 </html>
