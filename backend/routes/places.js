@@ -1,22 +1,27 @@
 const express = require("express");
-const { URLSearchParams } = require("url");
 const router = express.Router();
 
 
+// Hilfsfunktion fürs allgemeine Daten holen per Fetch
+async function fetchFromGoogleApi(endpoint, params) {
+  const baseUrl = `https://maps.googleapis.com/maps/api/${endpoint}`;
+  const searchParams = new URLSearchParams({ ...params, API_KEY });
 
+  const response = await fetch(`${url}?${searchParams.toString()}`)
+  if (!response.ok) {
+    throw new Error(`Google API Fehler ${response.statusText}`);
+  }
+
+  return response.json()
+}
 
 // Hilfsfunktion: Stadtname in Koordinaten umwandeln
 async function getCoordinatesFromCity(city) {
-  const url = `https://maps.googleapis.com/maps/api/geocode/json`;
-  const searchParams = new URLSearchParams({...params, API_KEY})
-  const response = await fetch(`${url}?${searchParams.toString()}`)
-
-  if (response.data.results.length === 0) {
-    throw new Error("Keine Koordinaten gefunden.");
+  const data = await fetchFromGoogleApi("place/nearbysearch/json", { address: city })
+  if (!data.results || data.results.length === 0) {
+    throw new Error("Diese Koordinaten wurden nicht gefunden");
   }
-
-  const location = response.data.results[0].geometry.location;
-  return location; // { lat: 52.52, lng: 13.405 }
+  return data.results[0].geometry.location;
 }
 
 // Haupt-Route für die Suche
@@ -30,18 +35,13 @@ router.get("/search", async (req, res) => {
   try {
     const location = await getCoordinatesFromCity(city);
 
-    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json`;
-
-    const response = await axios.get(url, {
-      params: {
-        key: GOOGLE_API_KEY,
-        location: `${location.lat},${location.lng}`,
-        radius: parseInt(radius) * 1000, // km → m
-        keyword: cuisine || "restaurant",
-        type: "restaurant",
-        language: "de",
-      },
-    });
+    const data = await fetchFromGoogleApi("place/nearbysearch/json", {
+      location: `${location.lat},${location.lng}`,
+      radius: parseInt(radius) * 1000, // km → m
+      keyword: cuisine || "restaurant",
+      type: "restaurant",
+      language: "de",
+    })
 
     const results = response.data.results.map((place) => ({
       id: place.place_id,
