@@ -1,5 +1,5 @@
 const loader = new Loader({
-  apiKey: "DEINAPIKEY",
+  apiKey: process.env.API_KEY,
   version: "weekly",
   ...additionalOptions,
 });
