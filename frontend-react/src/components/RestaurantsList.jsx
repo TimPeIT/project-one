@@ -4,15 +4,11 @@ import RestaurantItem from "./RestaurantItem";
 function RestaurantList() {
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const plzRef = useRef();
-  const queryRef = useRef();
-  const radiusRef = useRef();
+  const [city, setCity] = useState("");
+  const [cuisine, setCuisine] = useState("");
+  const [radius, setRadius] = useState("");
 
   const fetchRestaurants = async () => {
-    const city = plzRef.current?.value || "";
-    const cuisine = queryRef.current?.value || "";
-    const radius = radiusRef.current?.value || "";
 
     setLoading(true);
     try {
@@ -36,26 +32,30 @@ function RestaurantList() {
           <div className="row g-3">
             <div className="col-md-4">
               <input
-                ref={queryRef}
+                value={cuisine}
                 type="text"
                 className="form-control"
                 placeholder="Gericht oder Land suchen..."
+                onChange={(e)=> setCuisine(e.target.value)}
+
               />
             </div>
             <div className="col-md-2">
               <input
-                ref={plzRef}
+                value={city}
                 type="text"
                 className="form-control"
                 placeholder="Postleitzahl"
+                onChange={(e)=> setCity(e.target.value)}
               />
             </div>
             <div className="col-md-2">
               <input
-                ref={radiusRef}
+                value={radius}
                 type="number"
                 className="form-control"
                 placeholder="Radius (km)"
+                onChange={(e)=> setRadius(e.target.value)}
               />
             </div>
             <div className="col-md-2">

@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getSterneIcons } from "../utils/helpers";
+// import { getSterneIcons } from "./utils/helpers";
 
 function RestaurantItem({ restaurant }) {
   const [showMap, setShowMap] = useState(false);
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
+  const [stars, setStars] = useState(0);
 
   useEffect(() => {
     if (showMap && mapRef.current && !mapInstanceRef.current) {
@@ -31,7 +32,7 @@ function RestaurantItem({ restaurant }) {
           <small>{restaurant.kontakt}</small>
           <br />
           <small>
-            Bewertung: {getSterneIcons(restaurant.bewertung)} ({restaurant.bewertung})
+            Bewertung: ({restaurant.bewertung})
           </small>
         </div>
         <button

@@ -1,18 +1,15 @@
 const express = require("express");
-const axios = require("axios");
+const { URLSearchParams } = require("url");
 const router = express.Router();
 
-const GOOGLE_API_KEY = process.env.VITE_API_KEY;
+
+
 
 // Hilfsfunktion: Stadtname in Koordinaten umwandeln
 async function getCoordinatesFromCity(city) {
   const url = `https://maps.googleapis.com/maps/api/geocode/json`;
-  const response = await axios.get(url, {
-    params: {
-      address: city,
-      key: GOOGLE_API_KEY,
-    },
-  });
+  const searchParams = new URLSearchParams({...params, API_KEY})
+  const response = await fetch(`${url}?${searchParams.toString()}`)
 
   if (response.data.results.length === 0) {
     throw new Error("Keine Koordinaten gefunden.");

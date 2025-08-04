@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import RestaurantList from "./components/RestaurantList";
+import RestaurantList from "./components/RestaurantsList";
 
 function App() {
   useEffect(() => {
