@@ -18,5 +18,6 @@ Step-by-Step:
 8. Kompatibilität zwischen Vite und vorhandenen Code  ( Spaghetti - Code )
 9. Anpassung des Codes ( debugging ) um die App wieder zum laufen zu bekommen
 10. debugging places.js/Maploader.jsx/URL fixing
-11. integration von login und regisistrierung
-12.
+11. integration von login und registrierung
+12. frontend routen implementiert
+13. DOM-Router integriert
