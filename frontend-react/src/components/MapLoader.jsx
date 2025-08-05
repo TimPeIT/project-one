@@ -1,5 +1,5 @@
 import { Loader } from "@googlemaps/js-api-loader";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 const apiKey = import.meta.env.VITE_API_KEY;
 

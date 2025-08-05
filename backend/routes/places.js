@@ -1,13 +1,17 @@
 const express = require("express");
 const router = express.Router();
+require("dotenv").config();
 
+const API_KEY = process.env.API_KEY;
 
 // Hilfsfunktion fürs allgemeine Daten holen per Fetch
 async function fetchFromGoogleApi(endpoint, params) {
   const baseUrl = `https://maps.googleapis.com/maps/api/${endpoint}`;
-  const searchParams = new URLSearchParams({ ...params, API_KEY });
+  const searchParams = new URLSearchParams({ ...params, key: API_KEY });
+  // const response = await fetch(`${url}?${searchParams.toString()}`)
+  const url = `${baseUrl}?${searchParams.toString()}`;
 
-  const response = await fetch(`${url}?${searchParams.toString()}`)
+  const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Google API Fehler ${response.statusText}`);
   }
@@ -17,7 +21,7 @@ async function fetchFromGoogleApi(endpoint, params) {
 
 // Hilfsfunktion: Stadtname in Koordinaten umwandeln
 async function getCoordinatesFromCity(city) {
-  const data = await fetchFromGoogleApi("place/nearbysearch/json", { address: city })
+  const data = await fetchFromGoogleApi("geocode/json", { address: city })
   if (!data.results || data.results.length === 0) {
     throw new Error("Diese Koordinaten wurden nicht gefunden");
   }
@@ -43,7 +47,7 @@ router.get("/search", async (req, res) => {
       language: "de",
     })
 
-    const results = response.data.results.map((place) => ({
+    const results = data.results.map((place) => ({
       id: place.place_id,
       name: place.name,
       kontakt: place.vicinity,
