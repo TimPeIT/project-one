@@ -62,7 +62,7 @@ function RestaurantList() {
               <select className="form-select">
                 <option disabled selected>
                   Bewertung
-                </option>
+                </option >
                 <option value="5">5 Sterne</option>
                 <option value="4">4 Sterne</option>
                 <option value="3">3 Sterne</option>
