@@ -17,7 +17,7 @@ app.post('/api/register', auth.register);
 app.post('/api/login', auth.login);
 app.get('/api/favorites', authMW.verify, auth.getFavorites);
 app.post('/api/favorite', authMW.verify, auth.toggleFavorite);
-
+app.get('/api/profile', authMW.verify, auth.getProfile);
 
 
 app.listen(PORT, () => {

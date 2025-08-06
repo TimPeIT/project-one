@@ -21,3 +21,8 @@ Step-by-Step:
 11. integration von login und registrierung
 12. frontend routen implementiert
 13. DOM-Router integriert
+14. integration bcrypt
+15. integration mysql
+16. integration jwt 
+17. authentifizierung einbinden mit middleware 
+18. api endpunkte für den server implementiert 
