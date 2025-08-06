@@ -18,6 +18,23 @@ app.get("/", (req,res)=>{
   res.send("Hallo Welt")
 })
 
+router.post("/register", async (req, res) => {
+  const { name, email, password } = req.body;
+
+  // Registrierung-Logik...
+  res.json({ message: "Registrierung erfolgreich!" });
+});
+
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ error: "E-Mail und Passwort sind erforderlich." });
+  } 
+  res.json({ message: "Anmeldung erfolgreich!", token: "example-token" }); 
+});
+
+
+
 app.listen(PORT, () => {
   console.log(`Server läuft auf http://localhost:${PORT}`);
 });

@@ -4,6 +4,8 @@ import { Routes, Route, Link } from "react-router-dom";
 import Registrierung from "./components/registrierung";
 import Anmeldung from "./components/Anmeldung";
 import Home from "./components/Home"; 
+import Dashboard from "./components/dashboard";
+import Privat from "./components/Privat";
 
 function App() {
   useEffect(() => {
@@ -26,6 +28,7 @@ function App() {
         <div>
           <nav className="text-center mt-2">
             <Link to="/" className="btn btn-outline-secondary me-2">Home</Link> |{" "}
+            <Link to="/dashboard" className="btn btn-outline-info me-2">Dashboard</Link> |{" "}
             <Link to="/anmeldung" className="btn btn-outline-primary me-2">Anmeldung</Link> |{" "}
             <Link to="/register" className="btn btn-outline-success">Registrierung</Link> |{" "}
           </nav>
@@ -33,6 +36,11 @@ function App() {
         <main className="container mt-4">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/dashboard" element={
+              <Privat>
+                <Dashboard />
+              </Privat>
+            }/>
             <Route path="/anmeldung" element={<Anmeldung />} />
             <Route path="/register" element={<Registrierung />} />
           </Routes> 

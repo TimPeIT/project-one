@@ -6,6 +6,26 @@ function RestaurantItem({ restaurant }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const [stars, setStars] = useState(0);
+  const [isfavourite, setIsFavourite] = useState(false)
+
+  useEffect(() => {
+    const stored = localStorage.getItem("favourites");
+    if (stored) {
+      const favs = JSON.parse(stored);
+      setIsFavourite(favs.some((f) => f.id === restaurant.id));
+    }
+  }, [restaurant.id]);
+
+  const toggleFavourite = () => {
+    let favs = JSON.parse(localStorage.getItem("favourite")) || [];
+    if(isfavourite) {
+      favs = favs.filter((f) => f.id !== restaurant.id);
+    } else {
+      favs.push(restaurant);
+    }
+    localStorage.setItem("favourite", JSON.stringify(favs));
+    setIsFavourite(!isfavourite);
+  }
 
   useEffect(() => {
     if (showMap && mapRef.current && !mapInstanceRef.current) {
@@ -41,6 +61,11 @@ function RestaurantItem({ restaurant }) {
         >
           {showMap ? "Schließen" : "Karte"}
         </button>
+        <button
+        className={`btn btn-sm ${isfavourite ? "btn-danger" : "btn-outline-danger"}`}
+        onclick={toggleFavourite}
+        title={isfavourite ? "Aus Favoriten enternen" : "Zu Favoriten hinzufügen"}
+        ><img src="./icons/herz.png" alt="Herz" /></button>
       </div>
       {showMap && (
         <div className="mt-3">
