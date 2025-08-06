@@ -21,10 +21,10 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
-  try {
+    try {
+    const { email, password } = req.body;
     const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
-    if (rows.length === 0) return res.status(400).json({ error: 'Ungültige Anmeldedaten' });
+    if (!rows.length === 0) return res.status(400).json({ error: 'Ungültige Anmeldedaten' });
 
     const user = rows[0];
     const valid = await bcrypt.compare(password, user.password);
@@ -39,31 +39,24 @@ exports.login = async (req, res) => {
 };
 
 exports.getFavorites = async (req, res) => {
-  const userId = req.user.userId;
   try {
-    const [rows] = await db.query('SELECT * FROM favorites WHERE user_id = ?', [userId]);
-    res.json(rows);
+    const [favs] = await db.query('SELECT * FROM favorites WHERE user_id = ?', [req.user.userId]);
+    res.json(favs);
   } catch (err) {
     res.status(500).json({ error: 'Fehler beim Laden der Favoriten' });
   }
 };
 
 exports.toggleFavorite = async (req, res) => {
-  const userId = req.user.userId;
-  const { place_id, name, kontakt, bewertung, lat, lng } = req.body;
-
-  try {
-    const [rows] = await db.query(
-      'SELECT id FROM favorites WHERE user_id = ? AND place_id = ?',
-      [userId, place_id]
-    );
-
+    
+    try {
+        const userId = req.user.userId;
+        const { place_id, name, kontakt, bewertung, lat, lng } = req.body;
+        const [rows] = await db.query('SELECT id FROM favorites WHERE user_id = ? AND place_id = ?',[userId, place_id]);
     if (rows.length > 0) {
-      // Lösche Favorit
       await db.query('DELETE FROM favorites WHERE user_id = ? AND place_id = ?', [userId, place_id]);
       return res.json({ removed: true });
     } else {
-      // Füge Favorit hinzu
       await db.query(
         `INSERT INTO favorites (user_id, place_id, name, kontakt, bewertung, lat, lng)
          VALUES (?, ?, ?, ?, ?, ?, ?)`,
@@ -72,7 +65,6 @@ exports.toggleFavorite = async (req, res) => {
       return res.json({ added: true });
     }
   } catch (err) {
-    console.error('Favoriten-Fehler:', err);
     res.status(500).json({ error: 'Fehler beim Verwalten der Favoriten' });
   }
 };

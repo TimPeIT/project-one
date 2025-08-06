@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const placesRoutes = require("./routes/places");
+const auth = require('./authController');
+const authMW = require('./authMiddleware');
 
 const app = express();
 const PORT = 5000;
@@ -10,28 +11,12 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type"]
 }));
-app.use(express.json());
-app.use("/api/places", placesRoutes);
+app.use(cors(), express.json());
 
-app.get("/", (req,res)=>{
-  console.log("Hallo Welt");
-  res.send("Hallo Welt")
-})
-
-router.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
-
-  // Registrierung-Logik...
-  res.json({ message: "Registrierung erfolgreich!" });
-});
-
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ error: "E-Mail und Passwort sind erforderlich." });
-  } 
-  res.json({ message: "Anmeldung erfolgreich!", token: "example-token" }); 
-});
+app.post('/api/register', auth.register);
+app.post('/api/login', auth.login);
+app.get('/api/favorites', authMW.verify, auth.getFavorites);
+app.post('/api/favorite', authMW.verify, auth.toggleFavorite);
 
 
 

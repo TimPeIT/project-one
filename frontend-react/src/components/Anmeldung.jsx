@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Anmeldung() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [meldung, setMeldung] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -15,11 +17,8 @@ function Anmeldung() {
                 body: JSON.stringify({ email, password }),
             });
             const data = await response.json();
-            if (response.ok) {
-                // Token speichern, WENN vorhanden ( good luck have fun xD )
-                if (data.token) {
-                    localStorage.setItem("token", data.token);
-                }
+            if (response.ok && data.token) {
+                localSt
                 setMeldung("Anmeldung erfolgreich!");
                 // nur wenn wir die Weiterleitung nach Login drin haben wollen
                 // window.location.href = "/dashboard";
