@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-// import { getSterneIcons } from "./utils/helpers";
+import { Loader } from "@googlemaps/js-api-loader";
 
 function RestaurantItem({ restaurant }) {
   const [showMap, setShowMap] = useState(false);
@@ -17,31 +17,42 @@ function RestaurantItem({ restaurant }) {
   }, [restaurant.id]);
 
   const toggleFavourite = () => {
-    let favs = JSON.parse(localStorage.getItem("favourite")) || [];
+    let favs = JSON.parse(localStorage.getItem("favourites")) || [];
     if(isfavourite) {
       favs = favs.filter((f) => f.id !== restaurant.id);
     } else {
       favs.push(restaurant);
     }
-    localStorage.setItem("favourite", JSON.stringify(favs));
+    localStorage.setItem("favourites", JSON.stringify(favs));
     setIsFavourite(!isfavourite);
   }
 
   useEffect(() => {
-    if (showMap && mapRef.current && !mapInstanceRef.current) {
-      const { google } = window;
-      mapInstanceRef.current = new google.maps.Map(mapRef.current, {
+  if (showMap && mapRef.current && !mapInstanceRef.current) {
+    const loader = new Loader({
+      apiKey: import.meta.env.VITE_API_KEY,
+      version: "weekly",
+    });
+
+    loader.load().then(() => {
+      const map = new window.google.maps.Map(mapRef.current, {
         center: { lat: restaurant.lat, lng: restaurant.lng },
         zoom: 15,
       });
 
-      new google.maps.Marker({
+      new window.google.maps.Marker({
         position: { lat: restaurant.lat, lng: restaurant.lng },
-        map: mapInstanceRef.current,
+        map,
         title: restaurant.name,
       });
-    }
-  }, [showMap, restaurant]);
+
+      mapInstanceRef.current = map;
+    }).catch((err) => {
+      console.error("Fehler beim Laden von Google Maps:", err);
+    });
+  }
+}, [showMap, restaurant]);
+
 
   return (
     <li className="list-group-item d-flex flex-column">
@@ -65,7 +76,7 @@ function RestaurantItem({ restaurant }) {
         className={`btn btn-sm ${isfavourite ? "btn-danger" : "btn-outline-danger"}`}
         onClick={toggleFavourite}
         title={isfavourite ? "Aus Favoriten enternen" : "Zu Favoriten hinzufügen"}
-        ><img src="./icons/herz.png" alt="Herz" /></button>
+        >❤️</button>
       </div>
       {showMap && (
         <div className="mt-3">

@@ -15,6 +15,7 @@ function RestaurantList() {
       const response = await fetch(
         `http://localhost:5000/api/places/search?city=${city}&cuisine=${cuisine}&radius=${radius}`
       );
+      console.log(`URL der Suche: http://localhost:5000/api/places/search?city=${city}&cuisine=${cuisine}&radius=${radius}`);
       const data = await response.json();
       setRestaurants(data);
     } catch (err) {
@@ -45,7 +46,7 @@ function RestaurantList() {
                 value={city}
                 type="text"
                 className="form-control"
-                placeholder="Postleitzahl"
+                placeholder="Stadt oder Dorf"
                 onChange={(e)=> setCity(e.target.value)}
               />
             </div>

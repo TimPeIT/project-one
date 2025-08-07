@@ -6,6 +6,7 @@ import Anmeldung from "./components/Anmeldung";
 import Home from "./components/Home"; 
 import Dashboard from "./components/dashboard";
 import Privat from "./components/Privat";
+import FavouritesList from "./components/FavouritesList";
 
 function App() {
   useEffect(() => {
@@ -22,7 +23,6 @@ function App() {
   return (
     <>
       <header className="text-center p-3 bg-light shadow-sm">
-        <h1>Restaurant Guide Finder</h1>
         {/* <p className="small text-muted">{datumUhrzeit}</p> */}
       </header>
         <div>
@@ -31,6 +31,7 @@ function App() {
             <Link to="/dashboard" className="btn btn-outline-info me-2">Dashboard</Link> |{" "}
             <Link to="/anmeldung" className="btn btn-outline-primary me-2">Anmeldung</Link> |{" "}
             <Link to="/register" className="btn btn-outline-success">Registrierung</Link> |{" "}
+            <Link to="/favourites" className="btn btn-outline-danger">Favoriten</Link>
           </nav>
         </div>
         <main className="container mt-4">
@@ -43,12 +44,13 @@ function App() {
             }/>
             <Route path="/anmeldung" element={<Anmeldung />} />
             <Route path="/register" element={<Registrierung />} />
+            <Route path="/favourites" element={<FavouritesList />} />
           </Routes> 
         </main>
 
       <RestaurantList />
     <footer className="text-center mt-4 mb-3">
-      <p>© 2025 Restaurant Guide Finder · <a href="#">Impressum</a></p>
+      <p>© 2025 DineFinder · <a href="#">Impressum</a></p>
     </footer>
     </>
   );

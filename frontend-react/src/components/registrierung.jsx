@@ -17,7 +17,7 @@ function Registrierung() {
             return;
         }
         try {
-            const response = await fetch("http://localhost:5173/api/register", {
+            const response = await fetch("http://localhost:5000/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, email, password }),
@@ -107,31 +107,3 @@ function Registrierung() {
 }
 
 export default Registrierung;
-
-// const handleSubmit = asynce (e) => {
-//     e.preventDefault();
-//     setMeldung("");
-//     if (password !== confirmPassword) {
-//         setMeldung("Passwörter stimmen nicht überein.");
-//         return;
-//     }
-//     try {
-//         const response = await fetch("http://localhost:5000/api/register", {
-//             method: "POST",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify({ name, email, password }),
-//         });
-//         const data = await response.json();
-//         if (response.ok) {
-//             setMeldung("Registrierung erfolgreich!");
-//             setName("");
-//             setEmail("");
-//             setPassword("");
-//             setConfirmPassword("");
-//         } else {
-//             setMeldung(data.error || "Fehler bei der Registrierung. Überprüfen Sie Ihre Eingaben.");
-//         }
-//     } catch (err) {
-//         setMeldung("Serverfehler. Bitte versuchen Sie es später erneut.");
-//     }
-// };

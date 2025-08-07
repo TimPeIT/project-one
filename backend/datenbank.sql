@@ -1,0 +1,24 @@
+CREATE DATABASE IF NOT EXISTS restaurant_guide_app DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE restaurant_guide_app;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS favorites (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  place_id VARCHAR(100) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  kontakt VARCHAR(255),
+  bewertung VARCHAR(50),
+  lat DECIMAL(10, 6),
+  lng DECIMAL(10, 6),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  UNIQUE KEY unique_user_place (user_id, place_id)
+);
