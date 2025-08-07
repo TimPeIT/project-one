@@ -2,7 +2,18 @@ import React, { useEffect, useState } from "react";
 
 function Dashboard() {
     const [favourites, setFavourites] = useState([]);
+    const [user, setUser] =useState(null);
+
     useEffect(() => {
+        const token = localStorage.getItem("token");
+        const fetchUser = async () => {
+            const res = await fetch("http://localhost:5000/api/user/me", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            const data = await res.json();
+            setUser(data);
+        };
+
         const fetchFavourites = async () => {
             const token = localStorage.getItem("token");
             const res = await fetch("http://localhost:5000/api/favorites", {
@@ -11,6 +22,7 @@ function Dashboard() {
             const data = await res.json();
             setFavourites(data);
         };
+        fetchUser();
         fetchFavourites();
     }, []);
 
@@ -24,6 +36,12 @@ function Dashboard() {
     return (
         <div className="container my-4">
             <div className="card p-4 shadow">
+                {user && (
+                    <div className="mb-4">
+                        <h3>Angemeldet als {user.username}</h3>
+                        <small>{user.email}</small>
+                    </div>
+                )}
                 {favourites.length === 0 ? (
                     <p>Keine Favoriten gespeichert.</p>
                 ) : (
