@@ -1,14 +1,20 @@
 const jwt = require('jsonwebtoken');
-const SECRET = process.env.JWT_SECRET
 
 exports.verify = (req, res, next) => {
-    const auth = req.headers.authorization;
-    if (!auth?.startsWith('Bearer '))
-        return res.status(401).json({ error: 'Kein Token'})
-    try {
-        req.user = jwt.verify(auth.split(' ')[1], SECRET);
-        next();
-    } catch (error) {
-        res.status(403).json({ error: 'Token ungültig'})
-    }
-}
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader?.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Kein gültiger Token im Header' });
+  }
+
+  const token = authHeader.split(' ')[1];
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    console.error("JWT Fehler:", error.message);
+    return res.status(403).json({ error: 'Token ungültig' });
+  }
+};

@@ -3,6 +3,7 @@ const cors = require("cors");
 const auth = require('./authController');
 const authMW = require('./authMiddleware');
 const placesRoutes = require('./routes/places');
+const userdash = require("./routes/user");
 require("dotenv").config();
 const db = require('./db');
 const app = express();
@@ -17,6 +18,7 @@ app.use(cors(
 }
 ))
 app.use(cors(), express.json());
+app.use("/api/user/me", userdash);
 app.use("/api/places", placesRoutes);
 app.post('/api/register', auth.register);
 app.post('/api/login', auth.login);

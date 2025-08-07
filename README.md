@@ -26,3 +26,7 @@ Step-by-Step:
 16. integration jwt 
 17. authentifizierung einbinden mit middleware 
 18. api endpunkte für den server implementiert 
+19. datenbankfehler gefixed
+20. favouritelist implementiert
+21. middleware umgeschrieben
+22. google api fehler gefixed (fetch aufruf)
