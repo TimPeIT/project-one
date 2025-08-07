@@ -29,6 +29,7 @@ function Registrierung() {
                 setEmail("");
                 setPassword("");
                 setConfirmPassword("");
+                setTimeout(() => Navigate("/anmeldung"), 2000);
             } else {
                 setMeldung(data.error || "Fehler bei der Registrierung. Überprüfen Sie Ihre Eingaben.");
             }

@@ -2,13 +2,18 @@ import React, { useEffect, useState } from "react";
 
 function Dashboard() {
     const [favourites, setFavourites] = useState([]);
-
     useEffect(() => {
-        const stored = localStorage.getItem("favourites");
-        if (stored) {
-            setFavourites(JSON.parse(stored));
-        }
+        const fetchFavourites = async () => {
+            const token = localStorage.getItem("token");
+            const res = await fetch("http://localhost:5000/api/favorites", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            const data = await res.json();
+            setFavourites(data);
+        };
+        fetchFavourites();
     }, []);
+
 
     const removeFavourite = (id) => {
         const updated = favourites.filter((res) => res.id !== id);

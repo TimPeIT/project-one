@@ -63,7 +63,7 @@ function RestaurantItem({ restaurant }) {
         </button>
         <button
         className={`btn btn-sm ${isfavourite ? "btn-danger" : "btn-outline-danger"}`}
-        onclick={toggleFavourite}
+        onClick={toggleFavourite}
         title={isfavourite ? "Aus Favoriten enternen" : "Zu Favoriten hinzufügen"}
         ><img src="./icons/herz.png" alt="Herz" /></button>
       </div>

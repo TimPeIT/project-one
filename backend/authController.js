@@ -24,7 +24,7 @@ exports.login = async (req, res) => {
     try {
     const { email, password } = req.body;
     const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
-    if (!rows.length === 0) return res.status(400).json({ error: 'Ungültige Anmeldedaten' });
+    if (rows.length === 0) return res.status(400).json({ error: 'Ungültige Anmeldedaten' });
 
     const user = rows[0];
     const valid = await bcrypt.compare(password, user.password);

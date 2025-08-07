@@ -9,6 +9,6 @@ exports.verify = (req, res, next) => {
         req.user = jwt.verify(auth.split(' ')[1], SECRET);
         next();
     } catch (error) {
-        res.status(403).jos({ error: 'Token ungültig'})
+        res.status(403).json({ error: 'Token ungültig'})
     }
 }

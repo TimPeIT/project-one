@@ -18,10 +18,9 @@ function Anmeldung() {
             });
             const data = await response.json();
             if (response.ok && data.token) {
-                localSt
+                localStorage.setItem("token", data.token);
+                navigate("/dashboard");
                 setMeldung("Anmeldung erfolgreich!");
-                // nur wenn wir die Weiterleitung nach Login drin haben wollen
-                // window.location.href = "/dashboard";
             } else {
                 setMeldung(data.error || "Anmeldung fehlgeschlagen.");
             }
