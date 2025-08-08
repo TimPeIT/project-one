@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS restaurant_guide_app DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE restaurant_guide_app;
-
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,

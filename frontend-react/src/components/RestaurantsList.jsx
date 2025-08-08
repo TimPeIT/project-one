@@ -7,15 +7,15 @@ function RestaurantList() {
   const [city, setCity] = useState("");
   const [cuisine, setCuisine] = useState("");
   const [radius, setRadius] = useState("");
-
+  const [minRating, setMinRating] = useState(0);
   const fetchRestaurants = async () => {
 
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/places/search?city=${city}&cuisine=${cuisine}&radius=${radius}`
+        `http://localhost:5000/api/places/search?city=${city}&cuisine=${cuisine}&radius=${radius}&rating=${minRating}`
       );
-      console.log(`URL der Suche: http://localhost:5000/api/places/search?city=${city}&cuisine=${cuisine}&radius=${radius}`);
+      console.log(`URL der Suche: http://localhost:5000/api/places/search?city=${city}&cuisine=${cuisine}&radius=${radius}&rating=${minRating}`);
       const data = await response.json();
       setRestaurants(data);
     } catch (err) {
@@ -60,8 +60,8 @@ function RestaurantList() {
               />
             </div>
             <div className="col-md-2">
-              <select className="form-select">
-                <option disabled selected>
+              <select className="form-select" onChange={(e) => setMinRating(e.target.value)}>
+                <option value="0">
                   Bewertung
                 </option >
                 <option value="5">5 Sterne</option>

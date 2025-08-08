@@ -30,3 +30,39 @@ Step-by-Step:
 20. favouritelist implementiert
 21. middleware umgeschrieben
 22. google api fehler gefixed (fetch aufruf)
+
+
+# Techstack und Features des Restaurant Guide Finder 
+
+# 🍽️ Restaurant Guide Finder
+
+Ein vollständiges Webprojekt, das es Benutzer:innen ermöglicht, Restaurants in einer Stadt zu suchen, deren Standorte auf der Karte zu sehen und Restaurants zu Favoriten zu speichern. Authentifizierung und Nutzerverwaltung sind ebenfalls enthalten.
+
+## 🔧 Technologien
+
+**Frontend:**
+- React (Vite)
+- Bootstrap
+- Google Maps JavaScript API
+
+**Backend:**
+- Node.js / Express
+- MySQL
+- JSON Web Token (JWT) für Authentifizierung
+
+**Datenquellen:**
+- Google Places API
+- Google Geocoding API
+
+---
+
+## 🚀 Features
+
+- 🔍 Restaurant-Suche nach Stadt, Küche und Radius
+- 📍 Kartenansicht per Google Maps
+- ❤️ Favoriten hinzufügen / entfernen (authentifizierte Nutzer)
+- 🔐 Registrierung & Login mit Passwort-Hashing
+- 📬 Nutzerprofil anzeigen
+- 📱 Responsive UI
+
+---

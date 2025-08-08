@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Registrierung() {
     const [name, setName] = useState("");
@@ -8,6 +9,7 @@ function Registrierung() {
     const [meldung, setMeldung] = useState("");
     const isPasswordValid = password.length >= 8;
     const passwordMatches = password === confirmPassword;
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,7 +22,11 @@ function Registrierung() {
             const response = await fetch("http://localhost:5000/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, email, password }),
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password
+                }),
             });
             const data = await response.json();
             if (response.ok) {
@@ -29,7 +35,7 @@ function Registrierung() {
                 setEmail("");
                 setPassword("");
                 setConfirmPassword("");
-                setTimeout(() => Navigate("/anmeldung"), 2000);
+                setTimeout(() => navigate("/anmeldung"), 2000);
             } else {
                 setMeldung(data.error || "Fehler bei der Registrierung. Überprüfen Sie Ihre Eingaben.");
             }

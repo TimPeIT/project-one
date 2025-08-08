@@ -3,23 +3,42 @@ import React, { useEffect, useState } from "react";
 function Dashboard() {
     const [favourites, setFavourites] = useState([]);
     const [user, setUser] =useState(null);
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         const token = localStorage.getItem("token");
         const fetchUser = async () => {
-            const res = await fetch("http://localhost:5000/api/user/me", {
+            const res = await fetch("http://localhost:5000/api/user", {
+                method: "GET",
                 headers: { Authorization: `Bearer ${token}` },
             });
+            if (!res.ok) {
+                console.error("Fehler beim Abrufen des Benutzers");
+                return;
+            }
+
             const data = await res.json();
             setUser(data);
         };
 
         const fetchFavourites = async () => {
             const token = localStorage.getItem("token");
+            if (!token) {
+                console.error("Kein Token gefunden");
+                return;
+            }
+            console.log("Token gefunden:", token);
+
             const res = await fetch("http://localhost:5000/api/favorites", {
+                method: "GET",
                 headers: { Authorization: `Bearer ${token}` },
             });
+            if (!res.ok) {
+                console.error("Fehler beim Abrufen der Favoriten");
+                return;
+            }
             const data = await res.json();
+            
             setFavourites(data);
         };
         fetchUser();
@@ -30,7 +49,6 @@ function Dashboard() {
     const removeFavourite = (id) => {
         const updated = favourites.filter((res) => res.id !== id);
         setFavourites(updated);
-        localStorage.setItem("favourites", JSON.stringify(updated));
     };
 
     return (
@@ -38,7 +56,7 @@ function Dashboard() {
             <div className="card p-4 shadow">
                 {user && (
                     <div className="mb-4">
-                        <h3>Angemeldet als {user.username}</h3>
+                        <h3>Angemeldet als {user.name}</h3>
                         <small>{user.email}</small>
                     </div>
                 )}

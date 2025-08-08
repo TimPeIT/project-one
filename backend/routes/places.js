@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-require("dotenv").config();
-
 const API_KEY = process.env.API_KEY;
 
 // Hilfsfunktion fürs allgemeine Daten holen per Fetch
