@@ -8,14 +8,6 @@ function RestaurantItem({ restaurant }) {
   const [stars, setStars] = useState(0);
   const [isfavourite, setIsFavourite] = useState(false)
 
-  // useEffect(() => {
-  //   const stored = localStorage.getItem("favourites");
-  //   if (stored) {
-  //     const favs = JSON.parse(stored);
-  //     setIsFavourite(favs.some((f) => f.id === restaurant.id));
-  //   }
-  // }, [restaurant.id]);
-
   const toggleFavourite = async () => {
     const token = localStorage.getItem("token");
     if(isfavourite) {
@@ -37,7 +29,9 @@ function RestaurantItem({ restaurant }) {
       const response = await fetch(
         `http://localhost:5000/api/favorite`, {
           method: "POST",
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+               },
                 body: JSON.stringify({
                     place_id: restaurant.id,
                     name: restaurant.name,
@@ -56,6 +50,31 @@ function RestaurantItem({ restaurant }) {
     } 
     }
   }
+
+  useEffect(() => {
+    const fetchFavoriteStatus = async () => {
+      const token = localStorage.getItem("token");
+      if(!token) return;
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/favorite/${restaurant.id}`,
+          {method: "GET", headers: { Authorization: `Bearer ${token}`},
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Fehler beim Abrufen des Favoritenstatus");
+        }
+
+        const data = await response.json();
+        setIsFavourite(data.isfavourite);
+      } catch (err) {
+        console.error("Fehler beim Abrufen des Favoritenstatus:", err);
+      }
+    };
+
+    fetchFavoriteStatus();
+  }, [restaurant.id]);
 
   useEffect(() => {
   if (showMap && mapRef.current && !mapInstanceRef.current) {

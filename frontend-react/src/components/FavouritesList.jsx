@@ -25,24 +25,24 @@ function FavouritesList() {
   };
 
   const deleteFavourite = async (id) => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
+  const token = localStorage.getItem("token");
+  if (!token) return;
 
-    try {
-      const res = await fetch(`http://localhost:5000/api/favorites/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` }
-      });
+  try {
+    const res = await fetch(`http://localhost:5000/api/favorite/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` }
+    });
 
-      if (!res.ok) {
-        throw new Error("Fehler beim Löschen");
-      }
-
-      fetchFavourites();
-    } catch (error) {
-      console.error("Fehler beim Löschen des Favoriten:", error);
+    if (!res.ok) {
+      throw new Error("Fehler beim Löschen");
     }
-  };
+
+    fetchFavourites();
+  } catch (error) {
+    console.error("Fehler beim Löschen des Favoriten:", error);
+  }
+};
 
   useEffect(() => {
     fetchFavourites();

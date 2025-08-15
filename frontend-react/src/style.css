@@ -1,6 +1,6 @@
 :root {
-  --primary-bg: #F7F7FA;
-  --accent: #3A86FF;
+  --primary-bg: rgb(234, 235, 232);
+  --accent: #0d439b;
   --accent-light: #E0F0FF;
   --card-bg: #fff;
   --card-shadow: rgba(58, 134, 255, 0.08);
@@ -13,6 +13,7 @@
   --input-bg: #F3F6FA;
   --input-border: #BFC8E6;
 }
+
 /* Body */
 body {
   height: 100%;
@@ -27,7 +28,7 @@ body {
 }
 /* Banner */
 #app-banner {
-  background: linear-gradient(90deg, #E0F0FF 0%, #F7F7FA 100%);
+  background: linear-gradient(90deg, #d9d9da 0%, #F7F7FA 100%);
   color: var(--accent);
   padding: 2rem 1rem 1rem 1rem;
   text-align: center;
@@ -205,15 +206,3 @@ footer:hover {
     max-width: 100%;
   }
 }
-
-
-
-/* body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.place-picker-container {
-  padding: 20px;
-} */
