@@ -120,6 +120,7 @@ useEffect(()=>{
             Bewertung: ({restaurant.bewertung})
           </small>
         </div>
+        <div className="ms-auto d-flex gap-2">
         <button
           className="btn btn-sm btn-outline-dark"
           onClick={() => setShowMap(!showMap)}
@@ -131,6 +132,7 @@ useEffect(()=>{
         onClick={toggleFavourite}
         title={isfavourite ? "Aus Favoriten enternen" : "Zu Favoriten hinzufügen"}
         >❤️</button>
+      </div>
       </div>
       {showMap && (
         <div className="mt-3">

@@ -145,7 +145,7 @@ select.form-select:focus {
   transform: scale(1.02);
 }
 .list-group-item span {
-  color: #FFD700;
+  color: #22211a;
   font-size: 1.2rem;
   margin-right: 2px;
   vertical-align: middle;
