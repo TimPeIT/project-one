@@ -22,7 +22,7 @@ function App() {
 
   return (
     <>
-      <header className="text-center p-3 bg-light shadow-sm">
+      <header className="text-center bg-light shadow-sm">
         {/* <p className="small text-muted">{datumUhrzeit}</p> */}
       </header>
         <div>

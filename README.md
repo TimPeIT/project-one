@@ -30,6 +30,9 @@ Step-by-Step:
 20. favouritelist implementiert
 21. middleware umgeschrieben
 22. google api fehler gefixed (fetch aufruf)
+23. style.css implementiert(noch nicht final)
+
+
 
 
 # Techstack und Features des Restaurant Guide Finder 
